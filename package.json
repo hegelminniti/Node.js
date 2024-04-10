@@ -10,7 +10,8 @@
   "dependencies": {
     "cli-color": "^2.0.4",
     "fastify": "^4.26.2",
-    "figlet": "^1.7.0"
+    "figlet": "^1.7.0",
+    "fs": "^0.0.1-security"
   },
   "keywords": [],
   "description": ""
