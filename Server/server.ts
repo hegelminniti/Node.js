@@ -1,9 +1,13 @@
 import express from 'express';
 import 'express-async-errors';
 import morgan from 'morgan';
+/* import {
+  getAll, getOneById, create, updateById, deleteById
+} from './controllers/planetsDummy.js' */
+
 import {
   getAll, getOneById, create, updateById, deleteById
-} from './controllers/planets.js'
+} from './controllers/planetsDB.js'
 
 
 
