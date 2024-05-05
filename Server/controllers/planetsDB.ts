@@ -11,7 +11,8 @@ const setupDb = async () => {
 
         CREATE TABLE planets (
             id SERIAL NOT NULL PRIMARY KEY,
-            name TEXT NOT NULL
+            name TEXT NOT NULL,
+            image TEXT
         );
     `)
 
@@ -55,7 +56,7 @@ const planetSchema = Joi.object({
 
 
 
-const create = (req: Request, res: Response) => {
+const create = async (req: Request, res: Response) => {
     const {id, name} = req.body
     const newPlanet/* : Planet */ = {id, name}
     const validatedNewPlanet = planetSchema.validate(newPlanet)
@@ -71,7 +72,7 @@ const create = (req: Request, res: Response) => {
 
 }
 
-const updateById = (req: Request, res: Response) => {
+const updateById = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { name } = req.body;
     // planets = planets.map(p => p.id === Number(id) ? ({...p, name}) : p) //cerchiamo tramite id se c'è il pianeta che vogliamo modificare, se c'è lo aggiorniamo, altrimenti rimane invariato
@@ -79,13 +80,22 @@ const updateById = (req: Request, res: Response) => {
     res.status(200).json({msg: 'The planet was updated.'})
 }
 
-const deleteById = (req: Request, res: Response) => {
+const deleteById = async (req: Request, res: Response) => {
     const { id } = req.params;
     //planets = planets.filter(p => p.id !== Number(id)) 
 
     res.status(200).json({msg: 'The planet was deleted.'})
 }
 
+const createImage = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const fileName = req.file?.path;
+
+    await db.none('UPDATE planets SET image = $1 WHERE id = $2', [fileName, id]);
+
+    res.status(201).json({ msg: "Planet image uploaded successfully." });
+}
+
 export {
-    getAll, getOneById, create, updateById, deleteById
+    getAll, getOneById, create, updateById, deleteById, createImage
 }
